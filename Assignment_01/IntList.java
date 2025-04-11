@@ -4,6 +4,7 @@ public class IntList {
     int test2 = 5678;
     int test3 = 81827477;
 
+    System.out.println("Test cases:");
     System.out.println(test1);
     System.out.println(countNumbers(test1));
     System.out.println(test2);
@@ -11,7 +12,21 @@ public class IntList {
     System.out.println(test3);
     System.out.println(countNumbers(test3));
 
-    intToList(999);
+    int testnumber = 9999;
+    System.out.println("Test number:");
+    System.out.println(testnumber);
+    int[] testlist = intToList(testnumber);
+    for (int i = 0; i < testlist.length; i++) {
+      System.out.print("[" + testlist[i] + "]");
+    }
+    System.out.println();
+    testlist = addOne(testlist);
+    for (int i = 0; i < testlist.length; i++) {
+      System.out.print("[" + testlist[i] + "]");
+    }
+    System.out.println();
+    int newnumber = listToInt(testlist);
+    System.out.println(newnumber);
   }
 
   public static int countNumbers(int num) {
@@ -25,19 +40,37 @@ public class IntList {
     return count;
   }
 
-  public static int[] intToList(int value) {
-    int[] valueArray = new int[countNumbers(value)];
-    for (int i = 0; i < countNumbers(value); i++) {
-      if (value > 9) {
-        valueArray[i] = value % 10;
-        value = (int) value / 10;
-      } else {
-        valueArray[i] = value;
-      }
-      System.out.print("[" + valueArray[i] + "]");
+  public static int[] reverseList(int[] list) {
+    int[] reversed = new int[list.length];
+    for (int i = 0; i < list.length; i++) {
+      reversed[i] = list[list.length - 1 - i];
     }
-    System.out.println("");
-    return valueArray;
+    return reversed;
   }
 
+  public static int[] intToList(int num) {
+    int count = countNumbers(num);
+    int[] list = new int[count];
+    for (int i = 0; i < count; i++) {
+      list[i] = num % 10;
+      num = (int) num / 10;
+    }
+    return reverseList(list);
+  }
+
+  public static int listToInt(int[] list) {
+    int num = 0;
+    for (int i = 0; i < list.length; i++) {
+      if (list[i] == 0) {
+        num *= 10;
+      } else {
+        num += list[i] * Math.pow(10, i);
+      }
+    }
+    return num;
+  }
+
+  public static int[] addOne(int[] numbers) {
+    return intToList(listToInt(numbers) + 1);
+  }
 }
