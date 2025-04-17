@@ -75,4 +75,14 @@ public class Tree {
       }
     }
   }
+
+  public void deleteValue(int value) {
+    List<Integer> treeList = new ArrayList<>();
+    traverse(this, treeList);
+    treeList.remove(Integer.valueOf(value));
+    Tree tmp = new Tree(this.value);
+    for (Integer val : treeList) {
+      tmp.insertValue(val);
+    }
+  }
 }
