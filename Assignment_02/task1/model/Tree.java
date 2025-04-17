@@ -1,5 +1,9 @@
 package model;
 
+import java.util.ArrayList;
+import java.util.List;
+import java.util.stream.Collectors;
+
 public class Tree {
 
   private int value;
@@ -31,19 +35,44 @@ public class Tree {
   }
 
   public void setRight(Tree right) {
-    this.right = left;
+    this.right = right;
   }
 
   public String str() {
-    String treeString;
-    Tree tmp = this;
-    while (true) {
-      if (tmp.left != null) {
-        tmp = tmp.left;
-      } else if (tmp.left == null) {
-        treeString = treeString + tmp.value + " ";
-      }
+    List<Integer> treeList = new ArrayList<>();
+    traverse(this, treeList);
+    return treeList.stream()
+        .map(String::valueOf)
+        .collect(Collectors.joining(" "));
+  }
 
+  private void traverse(Tree node, List<Integer> output) {
+    if (node == null)
+      return;
+    traverse(node.getLeft(), output);
+    output.add(node.getValue());
+    traverse(node.getRight(), output);
+  }
+
+  public boolean contains(int value) {
+    List<Integer> treeList = new ArrayList<>();
+    traverse(this, treeList);
+    return treeList.contains(value);
+  }
+
+  public void insertValue(int value) {
+    if (value < this.value) {
+      if (this.left == null) {
+        this.left = new Tree(value);
+      } else {
+        this.left.insertValue(value);
+      }
+    } else if (value > this.value) {
+      if (this.right == null) {
+        this.right = new Tree(value);
+      } else {
+        this.right.insertValue(value);
+      }
     }
   }
 }
