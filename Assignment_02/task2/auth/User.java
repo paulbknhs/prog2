@@ -4,18 +4,22 @@ import java.util.ArrayList;
 import java.util.Arrays;
 import offerings.Item;
 
-class User {
+public class User {
   String Username;
   String Password;
   Item[] Items;
 
   public User(String Username, String Password) {
-    this.Username = username;
-    this.Password = password;
+    this.Username = Username;
+    this.Password = Password;
   }
 
   public String getUsername() {
     return this.Username;
+  }
+
+  public Item[] getItems() {
+    return this.Items;
   }
 
   public String getPassword() {
