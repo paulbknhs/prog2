@@ -12,6 +12,7 @@ public class User {
   public User(String Username, String Password) {
     this.Username = Username;
     this.Password = Password;
+    Items = new Item[10];
   }
 
   public String getUsername() {
@@ -35,13 +36,18 @@ public class User {
   }
 
   public boolean removeItem(Item item) {
-    ArrayList items = new ArrayList<>(Arrays.asList(this.Items));
+    ArrayList<Item> items = new ArrayList<>(Arrays.asList(this.Items));
     return items.remove(item);
   }
 
   public boolean addItem(Item item) {
-    ArrayList items = new ArrayList<>(Arrays.asList(this.Items));
-    return items.add(item);
+    for (int i = 0; i < Items.length; i++) {
+      if (Items[i] == null) {
+        Items[i] = item;
+        return true;
+      }
+    }
+    return false;
   }
 
 }
