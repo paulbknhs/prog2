@@ -3,23 +3,26 @@ package aufgabe3.data;
 import java.lang.Math;
 
 // This class is representing a cartesian coordinate in a 2d space with double coordinates.
-class DebugData {
+public class DebugData {
     private double x;
     private double y;
     
-    public DebugData(int x, int y) {
+  // int instead of double
+    public DebugData(double x, double y) {
         this.x = x;
         this.y = y;
     }
     
     public double distance(DebugData other) {
-        return Math.pow(Math.pow(this.x - other.x, 2) + Math.pow(this.y - other.y, 2));
+    // hier fehlt die sqrt
+        return Math.sqrt(Math.pow(Math.pow(this.x - other.x, 2) + Math.pow(this.y - other.y, 2)));
     }
     
     public double getX(){
         return this.x;
     }
     
+  // getY gibt x statt y zurück
     public double getY(){
         return this.x;
     }
