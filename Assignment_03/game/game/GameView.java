@@ -1,7 +1,7 @@
 package game;
 
 import java.lang.StringBuilder;
-import GameObject;
+import game.GameObjects;
 import entity.NPC;
 
 public class GameView {
@@ -11,7 +11,7 @@ public class GameView {
     this.view = new GameObjects[20][3];
   }
 
-  public str() {
+  public String str() {
     StringBuilder sb = new StringBuilder();
     for (int i = 0; i < view.length; i++) {
       for (int j = 0; j < view[i].length; j++) {
