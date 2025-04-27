@@ -1,6 +1,6 @@
 package entity;
 
-public class NPC {
+public class NPC{
 
   int xCoordinate;
   boolean isCrouching;
