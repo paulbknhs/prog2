@@ -2,8 +2,8 @@ package entity;
 
 public class NPC{
 
-  int xCoordinate;
-  boolean isCrouching;
+  public int xCoordinate;
+  public boolean isCrouching;
 
   public NPC() {
     this.xCoordinate = 0;
