@@ -1,5 +1,7 @@
 package aufgabe3;
 
+import aufgabe3.data.DebugData;
+
 class DebugMain {
   public static void main(String[] args) {
     DebugData a = new DebugData(3.4, 5.6);
