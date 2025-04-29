@@ -1,3 +1,5 @@
+import java.util.Locale.Category;
+
 import auth.User;
 import offerings.Item;
 
@@ -62,6 +64,7 @@ public class Marketplace {
             items += "Preis: " + item.getVerkaufspreis() + " ";
             items += "Verkäufer: " + item.getVerkaeufer().getUsername() + " ";
             items += "Beschreibung: " + item.getBeschreibung();
+            items += "Kategorie: " + item.getCategory();
             items += "]\n";
           }
         }
@@ -83,8 +86,35 @@ public class Marketplace {
     marketplace.addUser(newuser);
     System.out.println(marketplace.str());
 
-    Item newitem = new Item("Item1", 0.99f, newuser, "Beschreibung1");
+    Item newitem = new Item("Item1", 0.99f, newuser, "Beschreibung1", offerings.Category.ELECTRONICS);
     newuser.addItem(newitem);
     System.out.println(marketplace.str());
+  }
+
+  public String filterMarket(Category category) {
+    String items = "";
+    if (users == null) {
+      return "No users";
+    }
+    for (User user : users) {
+      if (user != null) {
+        Item[] userItems = user.getItems();
+        if (userItems == null) {
+          continue;
+        }
+        for (Item item : userItems) {
+          if (item != null && item.getCategory().equals(category)) {
+            items += "[";
+            items += "Item: " + item.getName() + " ";
+            items += "Preis: " + item.getVerkaufspreis() + " ";
+            items += "Verkäufer: " + item.getVerkaeufer().getUsername() + " ";
+            items += "Beschreibung: " + item.getBeschreibung();
+            items += "Kategorie: " + item.getCategory();
+            items += "]\n";
+          }
+        }
+      }
+    }
+    return items;
   }
 }

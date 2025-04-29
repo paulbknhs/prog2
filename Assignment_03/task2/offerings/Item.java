@@ -1,7 +1,7 @@
 package offerings;
 
 import auth.User;
-
+import offerings.Category;
 /**
  * This class represents an item offered in the marketplace.
  * Each item has a name, price, owner (seller), and description.
@@ -24,6 +24,9 @@ public class Item {
   /** A short description of the item. */
   String Beschreibung;
 
+  /**The items Category */
+  Category Kategorie;
+
   /**
    * Constructs a new item with the given attributes.
    *
@@ -33,11 +36,12 @@ public class Item {
    * @param Beschreibung The description of the item.
    * @author Paul Bakenhus
    */
-  public Item(String Name, float Verkaufspreis, User Verkaeufer, String Beschreibung) {
+  public Item(String Name, float Verkaufspreis, User Verkaeufer, String Beschreibung, Category Kategorie) {
     this.Name = Name;
     this.Verkaufspreis = Verkaufspreis;
     this.Verkaeufer = Verkaeufer;
     this.Beschreibung = Beschreibung;
+    this.Kategorie = Kategorie;
   }
 
   /**
@@ -48,6 +52,16 @@ public class Item {
    */
   public String getName() {
     return this.Name;
+  }
+
+  /**
+   * Returns the category of the item.
+   *
+   * @return The category.
+   * @author Paul Bakenhus
+   */
+  public String getCategory() {
+    return this.Kategorie.str();
   }
 
   /**
