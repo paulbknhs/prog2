@@ -7,13 +7,18 @@ class Expression {
   double left_, right_;
   Operator op_;
 
+  // added requirement
   Expression(double left, double right, Operator op){
-    this.left_  = left;
+    if (op == Operator.DIVIDE && right == 0.0) {
+      throw new IllegalArgumentException("Division by zero");
+    }
+    this.left_ = left;
     this.right_ = right;
-    this.op_    = op;
+    this.op_ = op;
   }
+  
 
-  double evaluate() {
+  double evaluate() {  
     switch (this.op_) {
       case Operator.ADD:
         return this.left_ + this.right_;
@@ -32,11 +37,14 @@ class Expression {
 class Debug {
 
   public static void main(String[] args) {
-    Operator[] ops = new Operator[5];
-    ops[0] = Operator.DIVIDE;
-    ops[1] = Operator.SUBTRACT;
-    ops[2] = Operator.MULTIPLY;
-    ops[3] = Operator.ADD;
+    // array too big so null was operator
+    Operator[] ops = new Operator[4];
+    ops[0] = Operator.SUBTRACT;
+    ops[1] = Operator.MULTIPLY;
+    ops[2] = Operator.ADD;
+    // Moved division so it doesnt divide by zero
+    ops[3] = Operator.DIVIDE;
+
 
     Expression[] exp = new Expression[ops.length];
     for (int i = 0; i < ops.length; ++i) {
@@ -48,3 +56,7 @@ class Debug {
     }
   }
 }
+
+// 1. Null PointerException
+// 2. division by 0
+// 3. added comment requirements
