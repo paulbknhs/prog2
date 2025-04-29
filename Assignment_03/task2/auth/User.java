@@ -5,7 +5,7 @@ import java.util.Arrays;
 import offerings.Item;
 
 /**
- * This class represents a user in the marketplace.
+ * Represents a user in the marketplace.
  * A user has a username, password, and can manage up to 10 items.
  *
  * @author Paul Bakenhus

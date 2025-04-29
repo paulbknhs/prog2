@@ -43,7 +43,7 @@ public class Marketplace {
    * Returns a string listing all items currently offered in the marketplace.
    * Iterates over all users and collects their items if present.
    *
-   * @return A formatted string of all offered items, or "No users" if no users are registered.
+   * @return A formatted string of all offered items
    * @author Paul Bakenhus
    */
   public String str() {
@@ -91,6 +91,14 @@ public class Marketplace {
     System.out.println(marketplace.str());
   }
 
+  /**
+   * Returns a string listing all items in a certain {@link offerings.Category} currently offered in the marketplace.
+   * Iterates over all users and collects their items if present.
+   *
+   * @param category The category that should be filtered for
+   * @return A formatted string of all offered items
+   * @author Paul Bakenhus
+   */
   public String filterMarket(Category category) {
     String items = "";
     if (users == null) {
