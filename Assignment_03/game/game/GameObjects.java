@@ -2,7 +2,7 @@ package game;
 
 public class GameObjects {
 
-  enum GameObject {
+  public enum GameObject {
     GROUND,
     LAVA,
     AIROBSTACLE,
