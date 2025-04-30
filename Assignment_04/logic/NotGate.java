@@ -1,7 +1,5 @@
 package logic;
 
-import logic.Gate;
-
 public class NotGate extends Gate{
 
     public NotGate() {
