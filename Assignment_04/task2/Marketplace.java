@@ -68,7 +68,7 @@ public class Marketplace {
             items += "Item: " + item.getName() + " ";
             items += "Preis: " + item.getVerkaufspreis() + " ";
             items += "Verkäufer: " + item.getVerkaeufer().getUsername() + " ";
-            items += "Beschreibung: " + item.getBeschreibung();
+            items += "Beschreibung: " + item.getBeschreibung() + " ";
             items += "Kategorie: " + item.getCategory();
             items += "]\n";
           }
@@ -242,8 +242,8 @@ private Category categoryPrompt(Scanner scan) {
     System.out.println("Marketplace Menu");
     System.out.println("1. Add Item");
     System.out.println("2. Remove Item");
-    System.out.println("3. View Marketplace");
-    System.out.println("4. Modify your listings");
+    System.out.println("3. Modify your listings");
+    System.out.println("4. View Marketplace");
     System.out.println("5. Exit");
   }
 
