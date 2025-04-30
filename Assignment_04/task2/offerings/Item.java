@@ -1,7 +1,6 @@
 package offerings;
 
 import auth.User;
-import Categoty;
 /**
  * This class represents an item offered in the marketplace.
  * Each item has a name, price, owner (seller), and description.

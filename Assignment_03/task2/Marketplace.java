@@ -86,13 +86,13 @@ public class Marketplace {
     marketplace.addUser(newuser);
     System.out.println(marketplace.str());
 
-    Item newitem = new Item("Item1", 0.99f, newuser, "Beschreibung1", offerings.Category.ELECTRONICS);
+    Item newitem = new Item("Item1", 0.99f, newuser, "Beschreibung1", Categoty.ELECTRONICS);
     newuser.addItem(newitem);
     System.out.println(marketplace.str());
   }
 
   /**
-   * Returns a string listing all items in a certain {@link offerings.Category} currently offered in the marketplace.
+   * Returns a string listing all items in a certain {@link Categoty} currently offered in the marketplace.
    * Iterates over all users and collects their items if present.
    *
    * @param category The category that should be filtered for
