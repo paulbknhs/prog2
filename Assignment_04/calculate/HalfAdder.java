@@ -13,4 +13,10 @@ public class HalfAdder {
         boolean s = gates[0].evaluate(a, b);
         return new boolean[]{s, c};
     }
+
+    public void info() {
+        for (Gate gate : this.gates) {
+            gate.table();
+        }
+    }
 }
