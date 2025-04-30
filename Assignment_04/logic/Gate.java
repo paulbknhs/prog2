@@ -16,11 +16,12 @@ public class Gate {
   }
 
   public void table() {
-    System.out.printf("a | b | a %s b", this.symbol);
+    System.out.printf("| a | b | a %s b |\n", this.symbol);
     for (int a = 0; a <= 1; a++) {
       for (int b = 0; b <= 1; b++) {
-        System.out.printf("%d | %d | %d\n", a, b, evaluate(intToBoolean(a), intToBoolean(b)) ? 0 : 1);
+        System.out.printf("| %d | %d |   %d   | \n", a, b, evaluate(intToBoolean(a), intToBoolean(b)) ? 1 : 0);
       }
     }
+    System.out.println();
   }
 }
