@@ -5,7 +5,7 @@ import island.State;
 
 public class TreasureIsland implements State {
     public State transition(Action action) {
-        return null;
+        return this;
     }
 
     public String str() {

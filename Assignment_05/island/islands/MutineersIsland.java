@@ -8,7 +8,7 @@ public class MutineersIsland implements State {
         switch (action.str()) {
             case "A": return new SmugglersCove();
             case "B": return new MusketHill();
-            default: return null;
+            default: return this;
         }
     }
 

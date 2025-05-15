@@ -8,7 +8,7 @@ public class DeadMansIsland implements State {
         switch (action.str()) {
             case "A": return new TreasureIsland();
             case "B": return new ShipwreckBay();
-            default: return null;
+            default: return this;
         }
     }
 

@@ -8,7 +8,7 @@ public class ShipwreckBay implements State {
         switch (action.str()) {
             case "A": return new MusketHill();
             case "B": return new DeadMansIsland();
-            default: return null;
+            default: return this;
         }
     }
 

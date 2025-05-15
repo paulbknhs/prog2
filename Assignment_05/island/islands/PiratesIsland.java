@@ -8,7 +8,7 @@ public class PiratesIsland implements State {
         switch (action.str()) {
             case "A": return new ShipwreckBay();
             case "B": return new MusketHill();
-            default: return null;
+            default: return this;
         }
     }
 

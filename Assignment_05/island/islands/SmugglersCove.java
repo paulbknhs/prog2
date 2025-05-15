@@ -7,7 +7,7 @@ public class SmugglersCove implements State {
     public State transition(Action action) {
         switch (action.str()) {
             case "A": return new TreasureIsland();
-            default: return null;
+            default: return this;
         }
     }
 

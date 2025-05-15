@@ -8,7 +8,7 @@ public class MusketHill implements State {
         switch (action.str()) {
             case "A": return new PiratesIsland();
             case "B": return new MutineersIsland();
-            default: return null;
+            default: return this;
         }
     }
 
