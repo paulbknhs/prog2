@@ -85,6 +85,12 @@ public class Marketplace {
 
                     if (Communicator.login(username, password)) {
                         this.username = username;
+                        for (User user : this.users) {
+                            if (user.getUsername().equals(username)) {
+                                this.loggedInUser = user;
+                            }
+                        }
+                        break;
                     }
                     tries++;
                 }
