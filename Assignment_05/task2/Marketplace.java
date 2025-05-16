@@ -61,16 +61,18 @@ public class Marketplace {
     }
 
     /**
+     * Prompts for either login or signup.
      * Asks for name and password up to 3 times in the console.
-     * Iff name and password matches one user, it returns said user
+     * login:       Iff name and password matches one user, attribute username and loggedInUser is set.
+     * register:    Iff no other user with same name is found, create a new user and add to List<Users>.
      * 
      * @author Kevin Schumann
-     * @return User that matches the name/password or null
+     * @author Paul Bakenhus
      */
     public void login() {
 
-        System.out.println("Do you want to (1) log in or (2) sign up?");
-        int choice = scanner.nextInt();
+        System.out.println("Do you want to (1) log in or (2) register a new user?");
+        int choice = Integer.parseInt(scanner.nextLine());
 
         switch (choice) {
             case 1:
