@@ -20,7 +20,7 @@ public class Marketplace {
     private Scanner scanner = new Scanner(System.in);
     private List<User> users;
     private User loggedInUser;
-    private String username = "";
+    private String username;
 
     /**
      * Constructs a marketplace object with 
@@ -168,8 +168,8 @@ public class Marketplace {
         Category cat = Category.valueOf(catString.toUpperCase());
         
         // create item and add to current user
-        Item item = new Item(name, price, this.loggedInUser, description, cat);
-        this.loggedInUser.addItem(item);
+        Item item = new Item(name, price, this.username, description, cat);
+        Communicator.addItem(username, item);
     }
 
     /**
@@ -182,14 +182,14 @@ public class Marketplace {
         System.out.println("\nGeben Sie die Nummer des zu entfernden Items an:\n");
         
         int counter = 1;
-        for (Item item : this.loggedInUser.getItems()) {
+        for (Item item : Communicator.getUserItems(username)) {
             System.out.println(counter + ".  " + item.str());
             counter++;
         }
         
         System.out.print("\nItem Nummer: ");
         int indexToRemove = Integer.parseInt(this.scanner.nextLine()) - 1;
-        this.loggedInUser.getItems().remove(indexToRemove);
+        Communicator.removeItem(Communicator.getUserItems(username)[indexToRemove]);
     }
 
 
@@ -204,14 +204,14 @@ public class Marketplace {
         System.out.println("\nGeben Sie die Nummer des zu ändernen Items an:\n");
         
         int counter = 1;
-        for (Item item : this.loggedInUser.getItems()) {
+        for (Item item : Communicator.getUserItems(username)) {
             System.out.println(counter + ".  " + item.str());
             counter++;
         }
 
         System.out.print("\nItem Nummer: ");
         int index = Integer.parseInt(this.scanner.nextLine()) - 1;
-        Item itemToChange = this.loggedInUser.getItems().get(index);
+        Item itemToChange = Communicator.getUserItems(username)[index];
 
         System.out.println(
                 "\nWählen Sie aus den folgenden Optionen:\n"
@@ -249,6 +249,7 @@ public class Marketplace {
             default:
                 break;
         }
+        Communicator.updateItem(itemToChange);
 
     }
 
@@ -278,7 +279,7 @@ public class Marketplace {
         }
 
         Category category = Category.valueOf(choice);
-        System.out.println(this.filterMarket(category));
+        System.out.println(Communicator.getItems(category));
 
     }
 

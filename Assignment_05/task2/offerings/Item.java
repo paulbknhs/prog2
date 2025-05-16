@@ -17,9 +17,29 @@ import task2.auth.User;
 public class Item {
     private String name;
     private float price;
-    private User owner; 
+    private String owner; 
     private String description;
     private Category category;
+    private int itemId;
+
+    /**
+     * Constructs the object with all its attributes and itemid -1.
+     * 
+     * @author Kevin Schumann
+     * @param name Name of the item
+     * @param price Price of the item
+     * @param owner Owner of the item
+     * @param description Description of the item
+     * @param category Category of the item.
+     */
+    public Item(String name, float price, String owner, String description, Category category) {
+        this.name = name;
+        this.price = price;
+        this.owner = owner;
+        this.description = description;
+        this.category = category;
+        this.itemId = -1;
+    }
 
     /**
      * Constructs the object with all its attributes.
@@ -30,13 +50,15 @@ public class Item {
      * @param owner Owner of the item
      * @param description Description of the item
      * @param category Category of the item.
+     * @param itemId ItemID of the item.
      */
-    public Item(String name, float price, User owner, String description, Category category) {
+    public Item(String name, float price, String owner, String description, Category category, int itemId) {
         this.name = name;
         this.price = price;
         this.owner = owner;
         this.description = description;
         this.category = category;
+        this.itemId = itemId;
     }
 
 
@@ -45,6 +67,7 @@ public class Item {
      * Returns a string representation of the object.
      * 
      * @author Kevin Schumann
+     * @author Paul Bakenhus
      * @return String representation of the object.
      */
     public String str() {
@@ -52,7 +75,7 @@ public class Item {
             "Item: %s; Price: %.2f, User: %s, Description: %s, Category: %s",
             name,
             price,
-            owner.getUsername(),
+            owner,
             description,
             category.str()
         );
@@ -67,6 +90,10 @@ public class Item {
 	public String getName() {
 		return this.name;
 	}
+
+    public int getItemId() {
+        return this.itemId;
+    }
 
     /**
      * Sets the name of the item
@@ -104,7 +131,7 @@ public class Item {
      * @author Kevin Schumann 
      * @return Owner of the item.
      */
-	public User getUser() {
+	public String getUser() {
 		return this.owner;
 	}
 

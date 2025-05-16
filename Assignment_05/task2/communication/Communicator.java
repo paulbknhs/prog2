@@ -116,7 +116,7 @@ public class Communicator {
      * @return True if adding the item to the user was succesful. 
      *         Returns false if any argument is null or empty.
      */
-    /* public static boolean addItem(String username, Item item) {
+    public static boolean addItem(String username, Item item) {
         if(item == null || username == null || username.length() == 0) {
             return false;
         }
@@ -146,7 +146,7 @@ public class Communicator {
         }
 
         return new JSONObject(res.body()).getBoolean("success");
-    } */
+    }
     
     /**
      * Fetches items from the marketplace owned by username and 
@@ -159,7 +159,7 @@ public class Communicator {
      *         Null if there are no such items.
      * 
      */
-    /* public static Item[] getItemsWith(Category category, String username) {
+    public static Item[] getItemsWith(Category category, String username) {
         JSONObject obj = new JSONObject();
         
         // if category is null we want all items
@@ -219,10 +219,10 @@ public class Communicator {
      *         Null if there are no such items.
      * 
      */
-    /*public static Item[] getItems(Category category) {
+    public static Item[] getItems(Category category) {
         return getItemsWith(category, "");
     } 
-    */
+    
 
     /**
      * Fetches items from the marketplace that are owned by username
@@ -233,11 +233,11 @@ public class Communicator {
      *         Null if there are no such items.
      * 
      */
-    /*
+    
     public static Item[] getUserItems(String username) {
         return getItemsWith(null, username);
     }
-    */
+    
 
     /**
      * Removes an item to a user on the marketplace.
@@ -248,7 +248,7 @@ public class Communicator {
      * @return True if removing the item was succesful. 
      *         Returns false if any argument is null or empty.
      */
-    /* public static boolean removeItem(Item item) {
+    public static boolean removeItem(Item item) {
         JSONObject obj = new JSONObject();
         obj.put("itemId", item.getItemId());
         obj.put("userId", item.getUser());
@@ -272,7 +272,6 @@ public class Communicator {
 
         return new JSONObject(res.body()).getBoolean("success");
     }
-    */
     
     /**
      * Updates an item  on the marketplace.
@@ -284,7 +283,7 @@ public class Communicator {
      *         If an item with the same id does not exist
      *         on the server, this function will return false.
      */
-    /* 
+    
     public static boolean updateItem(Item item) {
         if(item == null) {
             return false;
@@ -318,5 +317,5 @@ public class Communicator {
         System.out.println(res.body());
         return new JSONObject(res.body()).getBoolean("success");
     } 
-    */
+    
 }
