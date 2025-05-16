@@ -38,7 +38,7 @@ public class Communicator {
      * @param password Password for the user
      * @return True if login was succesful, otherwise False
      */
-    /* public static boolean login(String username, String password) {
+     public static boolean login(String username, String password) {
         
         JSONObject obj = new JSONObject();
         obj.put("username", username);
@@ -61,7 +61,7 @@ public class Communicator {
         }
         
         return new JSONObject(res.body()).getBoolean("success");
-    }  */
+    }
 
     
     
@@ -77,7 +77,7 @@ public class Communicator {
      *         any argument is null or empty
      */
     
-    /* public static boolean register(String username, String password) {
+    public static boolean register(String username, String password) {
         if(username == null || username.length() == 0 || password == null || password.length() == 0) {
             return false;
         }
@@ -105,7 +105,6 @@ public class Communicator {
 
         return new JSONObject(res.body()).getBoolean("success");
     }
-    */
 
     /**
      * Adds an item to a user on the marketplace.

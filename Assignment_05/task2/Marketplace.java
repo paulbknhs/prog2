@@ -4,6 +4,7 @@ import java.util.*;
 import task2.auth.*;
 import task2.offerings.*;
 import java.util.Scanner;
+import task2.communication.*;
 
 /**
  * This class represents a digital marketplace.
@@ -19,6 +20,7 @@ public class Marketplace {
     private Scanner scanner = new Scanner(System.in);
     private List<User> users;
     private User loggedInUser;
+    private String username = "";
 
     /**
      * Constructs a marketplace object with 
@@ -65,31 +67,41 @@ public class Marketplace {
      * @author Kevin Schumann
      * @return User that matches the name/password or null
      */
-    public User login() {
-        int tries = 0;
+    public void login() {
 
-        while(tries < 3){
-            System.out.print("Enter username: ");
-            String username = scanner.nextLine();
+        System.out.println("Do you want to (1) log in or (2) sign up?");
+        int choice = scanner.nextInt();
 
-            System.out.print("Enter password: ");
-            String password = scanner.nextLine();
+        switch (choice) {
+            case 1:
+                int tries = 0;
 
-            for (User user : this.users) {
-                int passwordMatch = user.getPassword().compareTo(password);
-                int userMatch = user.getUsername().compareTo(username);
-                
-                if(passwordMatch == 0 && userMatch == 0){
-                    this.loggedInUser = user;
-                    return user;
+                while(tries < 3){
+                    System.out.print("Enter username: ");
+                    String username = scanner.nextLine();
+
+                    System.out.print("Enter password: ");
+                    String password = scanner.nextLine();
+
+                    if (Communicator.login(username, password)) {
+                        this.username = username;
+                    }
+                    tries++;
                 }
-            }
-
-            tries++;
+                break;
+            case 2:
+                boolean success = false;
+                while (!success) {
+                    System.out.print("Enter username: ");
+                    String username = scanner.nextLine();
+                    System.out.print("Enter password: ");
+                    String password = scanner.nextLine();
+                    success = Communicator.register(username, password);
+                }
+            default:
+                break;
         }
-
         System.exit(0);
-        return null;
     }
 
     /**
