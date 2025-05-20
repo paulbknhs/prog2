@@ -19,11 +19,10 @@ public class Marketplace {
     // users of this marketplace
     private Scanner scanner = new Scanner(System.in);
     private List<User> users;
-    private User loggedInUser;
     private String username;
 
     /**
-     * Constructs a marketplace object with 
+     * Constructs a marketplace object with
      * maximum 10 users.
      * 
      * @author Kevin Schumann
@@ -41,8 +40,8 @@ public class Marketplace {
      */
     public String str() {
         String res = "";
-        
-        for(int i = 0; i < this.users.size(); i++) {
+
+        for (int i = 0; i < this.users.size(); i++) {
             res += "\n" + this.users.get(i).str();
         }
 
@@ -63,8 +62,10 @@ public class Marketplace {
     /**
      * Prompts for either login or signup.
      * Asks for name and password up to 3 times in the console.
-     * login:       Iff name and password matches one user, attribute username and loggedInUser is set.
-     * register:    Iff no other user with same name is found, create a new user and add to List<Users>.
+     * login: Iff name and password matches one user, attribute username and
+     * loggedInUser is set.
+     * register: Iff no other user with same name is found, create a new user and
+     * add to List<Users>.
      * 
      * @author Kevin Schumann
      * @author Paul Bakenhus
@@ -78,22 +79,14 @@ public class Marketplace {
             case 1:
                 int tries = 0;
 
-                while(tries < 3){
+                while (tries < 3) {
                     System.out.print("Enter username: ");
                     String username = scanner.nextLine();
 
                     System.out.print("Enter password: ");
                     String password = scanner.nextLine();
 
-                    if (Communicator.login(username, password)) {
-                        this.username = username;
-                        for (User user : this.users) {
-                            if (user.getUsername().equals(username)) {
-                                this.loggedInUser = user;
-                            }
-                        }
-                        break;
-                    }
+                    if (Communicator.login(username, password)) { this.username = username; break; }
                     tries++;
                 }
                 break;
@@ -109,7 +102,6 @@ public class Marketplace {
             default:
                 break;
         }
-        System.exit(0);
     }
 
     /**
@@ -118,11 +110,12 @@ public class Marketplace {
      * in the str() function.
      * 
      * @author Kevin Schumann
-     * @param category Category that shall be printed. Can be null. If null all items will be printed.
+     * @param category Category that shall be printed. Can be null. If null all
+     *                 items will be printed.
      * @return String of all the items that belong to the given category.
      */
     public String filterMarket(Category category) {
-        if(category == null) {
+        if (category == null) {
             return this.str();
         }
 
@@ -136,10 +129,10 @@ public class Marketplace {
 
             res += "\n";
         }
-        
+
         return res;
     }
-    
+
     /**
      * Implements the submenu in which user
      * can add new items to the marketplace
@@ -148,25 +141,25 @@ public class Marketplace {
      */
     public void addItemMenu() {
         System.out.println("\nUm ein Item hinzufügen, geben Sie die folgenden Daten ein.\n");
-        
+
         System.out.print("Name: ");
         String name = this.scanner.nextLine();
 
         System.out.print("Preis: ");
-        Float price =Float.parseFloat(this.scanner.nextLine());
-        
+        Float price = Float.parseFloat(this.scanner.nextLine());
+
         System.out.print("Beschreibung: ");
         String description = this.scanner.nextLine();
-        
+
         System.out.print("\nWähle aus den folgenden Kategorien und tippen Sie diese ein:\n\n");
-        for(Category c : Category.values()){
+        for (Category c : Category.values()) {
             System.out.println(c);
         }
-        
+
         System.out.print("\nKategory: ");
         String catString = scanner.nextLine();
         Category cat = Category.valueOf(catString.toUpperCase());
-        
+
         // create item and add to current user
         Item item = new Item(name, price, this.username, description, cat);
         Communicator.addItem(username, item);
@@ -180,19 +173,17 @@ public class Marketplace {
      */
     public void removeItemMenu() {
         System.out.println("\nGeben Sie die Nummer des zu entfernden Items an:\n");
-        
+
         int counter = 1;
         for (Item item : Communicator.getUserItems(username)) {
             System.out.println(counter + ".  " + item.str());
             counter++;
         }
-        
+
         System.out.print("\nItem Nummer: ");
         int indexToRemove = Integer.parseInt(this.scanner.nextLine()) - 1;
         Communicator.removeItem(Communicator.getUserItems(username)[indexToRemove]);
     }
-
-
 
     /**
      * Implements the submenu in which user
@@ -202,7 +193,7 @@ public class Marketplace {
      */
     public void editItemMenu() {
         System.out.println("\nGeben Sie die Nummer des zu ändernen Items an:\n");
-        
+
         int counter = 1;
         for (Item item : Communicator.getUserItems(username)) {
             System.out.println(counter + ".  " + item.str());
@@ -215,13 +206,12 @@ public class Marketplace {
 
         System.out.println(
                 "\nWählen Sie aus den folgenden Optionen:\n"
-                + "1. Name ändern\n"
-                + "2. Preis ändern\n"
-                + "3. Beschreibung ändern\n"
-                + "4. Category ändern\n"
-        ); 
+                        + "1. Name ändern\n"
+                        + "2. Preis ändern\n"
+                        + "3. Beschreibung ändern\n"
+                        + "4. Category ändern\n");
 
-        index =  Integer.parseInt(this.scanner.nextLine());
+        index = Integer.parseInt(this.scanner.nextLine());
         switch (index) {
             case 1:
                 System.out.print("\nNeuer name: ");
@@ -230,15 +220,14 @@ public class Marketplace {
             case 2:
                 System.out.print("\nNeuer Preis: ");
                 itemToChange.setPrice(
-                    Float.parseFloat(this.scanner.nextLine())
-                );
+                        Float.parseFloat(this.scanner.nextLine()));
                 break;
             case 3:
                 System.out.print("\nNeue Beschreibung: ");
                 itemToChange.setDescription(this.scanner.nextLine());
                 break;
             case 4:
-                for(Category c : Category.values()){
+                for (Category c : Category.values()) {
                     System.out.println(c);
                 }
 
@@ -255,31 +244,44 @@ public class Marketplace {
 
     /**
      * Implements the submenu in which user
-     * can filter the marketplace and print 
+     * can filter the marketplace and print
      * their selection.
      * 
      * @author Kevin Schumann
      */
     public void searchMarketplace() {
         System.out.println(
-            "\nGeben Sie die Kategory ein, die Sie sehen möchten."
-            + "Möchten Sie alle Items sehen, geben sie 'alle' ein\n"
-        );
+                "\nGeben Sie die Kategory ein, die Sie sehen möchten."
+                        + "Möchten Sie alle Items sehen, geben sie 'alle' ein\n");
 
-        for(Category c : Category.values()){
+        for (Category c : Category.values()) {
             System.out.println(c);
         }
         System.out.print("ALLE\n\n");
 
-        
         String choice = this.scanner.nextLine().toUpperCase();
-        if(choice.compareTo("ALLE") == 0) {
-            System.out.println(this.filterMarket(null));
-            return;
+        if (choice.compareTo("ALLE") == 0) {
+            for (Item item : Communicator.getItems(Category.ANIMALS)) {
+                System.out.println(item.str());
+            }
+            for (Item item : Communicator.getItems(Category.CLOTHES)) {
+                System.out.println(item.str());
+            }
+            for (Item item : Communicator.getItems(Category.ELECTRONICS)) {
+                System.out.println(item.str());
+            }
+            for (Item item : Communicator.getItems(Category.FURNITURE)) {
+                System.out.println(item.str());
+            }
+            for (Item item : Communicator.getItems(Category.SERVICES)) {
+                System.out.println(item.str());
+            }
+        } else {
+            Category category = Category.valueOf(choice);
+            for (Item item : Communicator.getItems(category)) {
+                System.out.println(item.str());
+            }
         }
-
-        Category category = Category.valueOf(choice);
-        System.out.println(Communicator.getItems(category));
 
     }
 
@@ -290,18 +292,17 @@ public class Marketplace {
      * @author Kevin Schumann
      */
     public void cli() {
-        while(true) {
+        while (true) {
             System.out.println(
-                "\nWählen Sie aus den folgenden Optionen:\n\n"
-                + "1. Item hinzufügen\n"
-                + "2. Item entfernen\n"
-                + "3. Item editieren\n"
-                + "4. Marketplace anssehen\n"
-                + "5. Programm beenden\n"
-            ); 
+                    "\nWählen Sie aus den folgenden Optionen:\n\n"
+                            + "1. Item hinzufügen\n"
+                            + "2. Item entfernen\n"
+                            + "3. Item editieren\n"
+                            + "4. Marketplace anssehen\n"
+                            + "5. Programm beenden\n");
 
             int choice = Integer.parseInt(this.scanner.nextLine());
-            
+
             switch (choice) {
                 case 1:
                     addItemMenu();
@@ -316,7 +317,7 @@ public class Marketplace {
                     searchMarketplace();
                     break;
                 case 5:
-                    System.exit(0);    
+                    System.exit(0);
                     break;
                 default:
                     break;
@@ -326,7 +327,6 @@ public class Marketplace {
 
     }
 
-
     public static void main(String[] args) {
         Marketplace m = new Marketplace();
         m.addUser(new User("Max", "1234"));
@@ -335,4 +335,3 @@ public class Marketplace {
         m.cli();
     }
 }
-

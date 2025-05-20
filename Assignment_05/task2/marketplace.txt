@@ -1,0 +1,1011 @@
+package task2;
+
+import java.util.*;
+import task2.auth.*;
+import task2.offerings.*;
+import java.util.Scanner;
+import task2.communication.*;
+
+/**
+ * This class represents a digital marketplace.
+ * 
+ * Items are offered on this marketplace by user,
+ * which can be added to this marketplace.
+ * 
+ * @author Kevin Schumann
+ * @version 03/05/2023
+ */
+public class Marketplace {
+    // users of this marketplace
+    private Scanner scanner = new Scanner(System.in);
+    private List<User> users;
+    private User loggedInUser;
+    private String username;
+
+    /**
+     * Constructs a marketplace object with 
+     * maximum 10 users.
+     * 
+     * @author Kevin Schumann
+     */
+    public Marketplace() {
+        this.scanner = new Scanner(System.in);
+        this.users = new ArrayList<User>();
+    }
+
+    /**
+     * Returns a string representation of the marketplace
+     * 
+     * @author Kevin Schumann
+     * @return String representation of the item.
+     */
+    public String str() {
+        String res = "";
+        
+        for(int i = 0; i < this.users.size(); i++) {
+            res += "\n" + this.users.get(i).str();
+        }
+
+        return res;
+    }
+
+    /**
+     * Adds an user to the marketplace.
+     * 
+     * @author Kevin Schumann
+     * @param user User that shall be added.
+     * @return False if user limit has been reached, else true.
+     */
+    public boolean addUser(User user) {
+        return this.users.add(user);
+    }
+
+    /**
+     * Prompts for either login or signup.
+     * Asks for name and password up to 3 times in the console.
+     * login:       Iff name and password matches one user, attribute username and loggedInUser is set.
+     * register:    Iff no other user with same name is found, create a new user and add to List<Users>.
+     * 
+     * @author Kevin Schumann
+     * @author Paul Bakenhus
+     */
+    public void login() {
+
+        System.out.println("Do you want to (1) log in or (2) register a new user?");
+        int choice = Integer.parseInt(scanner.nextLine());
+
+        switch (choice) {
+            case 1:
+                int tries = 0;
+
+                while(tries < 3){
+                    System.out.print("Enter username: ");
+                    String username = scanner.nextLine();
+
+                    System.out.print("Enter password: ");
+                    String password = scanner.nextLine();
+
+                    if (Communicator.login(username, password)) {
+                        this.username = username;
+                        for (User user : this.users) {
+                            if (user.getUsername().equals(username)) {
+                                this.loggedInUser = user;
+                            }
+                        }
+                        break;
+                    }
+                    tries++;
+                }
+                break;
+            case 2:
+                boolean success = false;
+                while (!success) {
+                    System.out.print("Enter username: ");
+                    String username = scanner.nextLine();
+                    System.out.print("Enter password: ");
+                    String password = scanner.nextLine();
+                    success = Communicator.register(username, password);
+                }
+            default:
+                break;
+        }
+        System.exit(0);
+    }
+
+    /**
+     * Returns string of all items that belong to as the given category.
+     * Iff category is null all items will be printed like
+     * in the str() function.
+     * 
+     * @author Kevin Schumann
+     * @param category Category that shall be printed. Can be null. If null all items will be printed.
+     * @return String of all the items that belong to the given category.
+     */
+    public String filterMarket(Category category) {
+        if(category == null) {
+            return this.str();
+        }
+
+        String res = "";
+        for (User user : users) {
+            for (Item item : user.getItems()) {
+                if (category.isSameCategory(item)) {
+                    res += item.str();
+                }
+            }
+
+            res += "\n";
+        }
+        
+        return res;
+    }
+    
+    /**
+     * Implements the submenu in which user
+     * can add new items to the marketplace
+     * 
+     * @author Kevin Schumann
+     */
+    public void addItemMenu() {
+        System.out.println("\nUm ein Item hinzufügen, geben Sie die folgenden Daten ein.\n");
+        
+        System.out.print("Name: ");
+        String name = this.scanner.nextLine();
+
+        System.out.print("Preis: ");
+        Float price =Float.parseFloat(this.scanner.nextLine());
+        
+        System.out.print("Beschreibung: ");
+        String description = this.scanner.nextLine();
+        
+        System.out.print("\nWähle aus den folgenden Kategorien und tippen Sie diese ein:\n\n");
+        for(Category c : Category.values()){
+            System.out.println(c);
+        }
+        
+        System.out.print("\nKategory: ");
+        String catString = scanner.nextLine();
+        Category cat = Category.valueOf(catString.toUpperCase());
+        
+        // create item and add to current user
+        Item item = new Item(name, price, this.username, description, cat);
+        Communicator.addItem(username, item);
+    }
+
+    /**
+     * Implements the submenu in which user
+     * can remove items from the marketplace
+     * 
+     * @author Kevin Schumann
+     */
+    public void removeItemMenu() {
+        System.out.println("\nGeben Sie die Nummer des zu entfernden Items an:\n");
+        
+        int counter = 1;
+        for (Item item : Communicator.getUserItems(username)) {
+            System.out.println(counter + ".  " + item.str());
+            counter++;
+        }
+        
+        System.out.print("\nItem Nummer: ");
+        int indexToRemove = Integer.parseInt(this.scanner.nextLine()) - 1;
+        Communicator.removeItem(Communicator.getUserItems(username)[indexToRemove]);
+    }
+
+
+
+    /**
+     * Implements the submenu in which user
+     * can edit their own items.
+     * 
+     * @author Kevin Schumann
+     */
+    public void editItemMenu() {
+        System.out.println("\nGeben Sie die Nummer des zu ändernen Items an:\n");
+        
+        int counter = 1;
+        for (Item item : Communicator.getUserItems(username)) {
+            System.out.println(counter + ".  " + item.str());
+            counter++;
+        }
+
+        System.out.print("\nItem Nummer: ");
+        int index = Integer.parseInt(this.scanner.nextLine()) - 1;
+        Item itemToChange = Communicator.getUserItems(username)[index];
+
+        System.out.println(
+                "\nWählen Sie aus den folgenden Optionen:\n"
+                + "1. Name ändern\n"
+                + "2. Preis ändern\n"
+                + "3. Beschreibung ändern\n"
+                + "4. Category ändern\n"
+        ); 
+
+        index =  Integer.parseInt(this.scanner.nextLine());
+        switch (index) {
+            case 1:
+                System.out.print("\nNeuer name: ");
+                itemToChange.setName(this.scanner.nextLine());
+                break;
+            case 2:
+                System.out.print("\nNeuer Preis: ");
+                itemToChange.setPrice(
+                    Float.parseFloat(this.scanner.nextLine())
+                );
+                break;
+            case 3:
+                System.out.print("\nNeue Beschreibung: ");
+                itemToChange.setDescription(this.scanner.nextLine());
+                break;
+            case 4:
+                for(Category c : Category.values()){
+                    System.out.println(c);
+                }
+
+                System.out.println("\nBitte schreiben Sie die neue Kategory\n");
+                Category category = Category.valueOf(this.scanner.nextLine().toUpperCase());
+                itemToChange.setCategory(category);
+                break;
+            default:
+                break;
+        }
+        Communicator.updateItem(itemToChange);
+
+    }
+
+    /**
+     * Implements the submenu in which user
+     * can filter the marketplace and print 
+     * their selection.
+     * 
+     * @author Kevin Schumann
+     */
+    public void searchMarketplace() {
+        System.out.println(
+            "\nGeben Sie die Kategory ein, die Sie sehen möchten."
+            + "Möchten Sie alle Items sehen, geben sie 'alle' ein\n"
+        );
+
+        for(Category c : Category.values()){
+            System.out.println(c);
+        }
+        System.out.print("ALLE\n\n");
+
+        
+        String choice = this.scanner.nextLine().toUpperCase();
+        if(choice.compareTo("ALLE") == 0) {
+            System.out.println(this.filterMarket(null));
+            return;
+        }
+
+        Category category = Category.valueOf(choice);
+        System.out.println(Communicator.getItems(category));
+
+    }
+
+    /**
+     * Implements the main menu of
+     * the command line interface.
+     * 
+     * @author Kevin Schumann
+     */
+    public void cli() {
+        while(true) {
+            System.out.println(
+                "\nWählen Sie aus den folgenden Optionen:\n\n"
+                + "1. Item hinzufügen\n"
+                + "2. Item entfernen\n"
+                + "3. Item editieren\n"
+                + "4. Marketplace anssehen\n"
+                + "5. Programm beenden\n"
+            ); 
+
+            int choice = Integer.parseInt(this.scanner.nextLine());
+            
+            switch (choice) {
+                case 1:
+                    addItemMenu();
+                    break;
+                case 2:
+                    removeItemMenu();
+                    break;
+                case 3:
+                    editItemMenu();
+                    break;
+                case 4:
+                    searchMarketplace();
+                    break;
+                case 5:
+                    System.exit(0);    
+                    break;
+                default:
+                    break;
+            }
+
+        }
+
+    }
+
+
+    public static void main(String[] args) {
+        Marketplace m = new Marketplace();
+        m.addUser(new User("Max", "1234"));
+
+        m.login();
+        m.cli();
+    }
+}
+
+package task2.auth;
+
+
+import java.util.*;
+import task2.offerings.Item;
+
+/**
+ * Represents a user in a marketplace setting.
+ * 
+ * Represents a user in a marketplace settings.
+ * Users are able to offer items on the marketplace
+ * A user is associated with a username and password.
+ * 
+ * @author Kevin Schumann
+ * @version 03/05/2023
+ */
+public class User {
+    private String username;
+    private String password;
+    private List<Item> items;
+
+    /**
+     * Constructs an user object with a given username
+     * and password. User created with this method can
+     * offer up to 10 items at a time.
+     * 
+     * @author Kevin Schumann
+     * @param username Username of the user
+     * @param password Password of the user
+     */
+    public User(String username, String password) {
+        this.username = username;
+        this.password = password;
+        this.items = new ArrayList<Item>();
+    }
+
+    /**
+     * Returns the username.
+     * 
+     * @author Kevin Schumann
+     * @return Username of the user
+     */
+	public String getUsername() {
+		return this.username;
+	}
+    
+    /**
+     * Sets the username.
+     * 
+     * @author Kevin Schumann
+     * @param username New username of the user
+     */
+	public void setUsername(String username) {
+		this.username = username;
+	}
+
+    /**
+     * Returns the password of the user
+     * 
+     * @author Kevin Schumann
+     * @return String: Password
+     */
+    public String getPassword() {
+        return this.password;
+    }
+
+    /**
+     * Returns the items offered by the user.
+     * 
+     * @author Kevin Schumann
+     * @return Items that the user is offering
+     */
+	public List<Item> getItems() {
+		return this.items;
+	}
+
+    /**
+     * Removes an item from the offered items.
+     * 
+     * @author Kevin Schumann
+     * @param item Item that shall be removed
+     * @return False if the item was not found, true otherwise.
+     */
+    public boolean removeItem(Item item) {
+        return this.items.remove(item);
+    }
+    
+    /**
+     * Adds an item from the offered items.
+     * 
+     * @author Kevin Schumann
+     * @param item Item that shall be added
+     * @return False if item could not be added, true otherwise.
+     */
+    public boolean addItem(Item item) {
+        boolean test = this.items.add(item);
+        return test;
+    }
+
+    /**
+     * Returns a string representation of the object.
+     * 
+     * @author Kevin Schumann
+     * @return String representation of the object.
+     */
+    public String str() {
+        if(this.items.size() == 0) {
+            return "";
+        }
+        
+        // Password sollte vielleicht nicht ausgegeben werden.
+        String res = this.username + " offers:\n";
+        for(int i = 0; i < this.items.size(); i++) {
+            res += this.items.get(i).str();
+        }
+        res += "\n";
+
+        return res;
+    }
+}package task2.communication;
+
+import java.io.IOException;
+import java.net.*;
+import java.net.http.*;
+import java.net.http.HttpClient.Version;
+import java.net.http.HttpRequest.*;
+import java.net.http.HttpResponse.*;
+import java.util.ArrayList;
+import java.util.Arrays;
+import java.util.List;
+
+import org.json.*;
+
+import task2.offerings.Category;
+import task2.offerings.Item;
+import netscape.javascript.JSObject;
+
+
+/**
+ * This class exposes function
+ * that communicate with the online 
+ * marketplace via http.
+ * 
+ * @author Kevin Schumann
+ * @version 03/05/2023
+ */
+public class Communicator {
+
+    public static String BASE_URL = "https://marketplace-server-kevin-schumanns-projects.vercel.app";
+
+    
+    /**
+     * Logs an user with a given username and password in
+     * 
+     * @author Kevin Schumann
+     * @param username Username
+     * @param password Password for the user
+     * @return True if login was succesful, otherwise False
+     */
+     public static boolean login(String username, String password) {
+        
+        JSONObject obj = new JSONObject();
+        obj.put("username", username);
+        obj.put("password", password);
+
+        HttpClient client = HttpClient.newHttpClient();
+        HttpRequest request = HttpRequest.newBuilder()
+                .version(Version.HTTP_1_1)
+                .uri(URI.create(BASE_URL + "/login"))
+                .header("Content-Type", "application/json")
+                .POST(BodyPublishers.ofString(obj.toString()))
+                .build();
+
+        HttpResponse<String> res = null;
+        
+        try {
+            res = client.send(request, BodyHandlers.ofString());
+        } catch (Exception e) {
+            e.printStackTrace();
+        }
+        
+        return new JSONObject(res.body()).getBoolean("success");
+    }
+
+    
+    
+    /**
+     * Registers an user with username and password
+     * in the marketplace
+     * 
+     * @author Kevin Schumann
+     * @param username Username, shall not be null or empty
+     * @param password Password for the user, shall not be null or empty
+     * @return True if registering was succesful. 
+     *         Returns false if a user with the same username exists already or
+     *         any argument is null or empty
+     */
+    
+    public static boolean register(String username, String password) {
+        if(username == null || username.length() == 0 || password == null || password.length() == 0) {
+            return false;
+        }
+
+        JSONObject obj = new JSONObject();
+        obj.put("username", username);
+        obj.put("password", password);
+
+        HttpClient client = HttpClient.newHttpClient();
+        HttpRequest request = HttpRequest.newBuilder()
+                .version(Version.HTTP_1_1)
+                .uri(URI.create(BASE_URL + "/register"))
+                .header("Content-Type", "application/json")
+                .POST(BodyPublishers.ofString(obj.toString()))
+                .build();
+
+        // send request
+        HttpResponse<String> res = null;
+        
+        try {
+            res = client.send(request, BodyHandlers.ofString());
+        } catch (Exception e) {
+            System.out.println(e);
+        }
+
+        return new JSONObject(res.body()).getBoolean("success");
+    }
+
+    /**
+     * Adds an item to a user on the marketplace.
+     * 
+     * @author Kevin Schumann
+     * @param username Username, shall not be null or empty
+     * @param item Item that shall be added to the user 
+     *             (with the given username) on the marketplace, shall not be null
+     * @return True if adding the item to the user was succesful. 
+     *         Returns false if any argument is null or empty.
+     */
+    public static boolean addItem(String username, Item item) {
+        if(item == null || username == null || username.length() == 0) {
+            return false;
+        }
+
+        JSONObject obj = new JSONObject();
+        obj.put("name", item.getName());
+        obj.put("price", item.getPrice());
+        obj.put("description", item.getDescription());
+        obj.put("category", item.getCategory().name());
+        obj.put("username", username);
+
+        HttpClient client = HttpClient.newHttpClient();
+        HttpRequest request = HttpRequest.newBuilder()
+                .version(Version.HTTP_1_1)
+                .uri(URI.create(BASE_URL + "/addItem"))
+                .header("Content-Type", "application/json")
+                .POST(BodyPublishers.ofString(obj.toString()))
+                .build();
+
+        // send request
+        HttpResponse<String> res = null;
+        
+        try {
+            res = client.send(request, BodyHandlers.ofString());
+        } catch (Exception e) {
+            System.out.println(e);
+        }
+
+        return new JSONObject(res.body()).getBoolean("success");
+    }
+    
+    /**
+     * Fetches items from the marketplace owned by username and 
+     * are within the given category.
+     * 
+     * @author Kevin Schumann
+     * @param category If specified only items with given category will be fetched
+     * @param username If specifid only items that belong to the username will be fetched
+     * @return Returns Item[] with specified category and are owned by username. 
+     *         Null if there are no such items.
+     * 
+     */
+    public static Item[] getItemsWith(Category category, String username) {
+        JSONObject obj = new JSONObject();
+        
+        // if category is null we want all items
+        if (category != null) {
+            obj.put("category", category.name());
+            
+        }
+        
+        if (username.length() != 0) {
+            obj.put("userId", username);
+        }
+        
+        HttpClient client = HttpClient.newHttpClient();
+        HttpRequest request = HttpRequest.newBuilder()
+        .version(Version.HTTP_1_1)
+        .uri(URI.create(BASE_URL + "/getItems"))
+        .header("Content-Type", "application/json")
+        .POST(BodyPublishers.ofString(obj.toString()))
+        .build();
+        
+        // send request
+        HttpResponse<String> res = null;
+        
+        try {
+            res = client.send(request, BodyHandlers.ofString());
+        } catch (Exception e) {
+            System.out.println(e);
+        }
+        
+        // Get item array as JSONArray
+        JSONArray response = new JSONObject(res.body()).getJSONArray("items");
+        
+        // Parse Array into Items
+        List<Item> items = new ArrayList<>();
+        for (Object o : response) {
+            JSONObject json_item = (JSONObject) o;
+            
+            items.add(new Item(
+                json_item.getInt("id"),
+                json_item.getString("name"), 
+                json_item.getFloat("price"), 
+                json_item.getJSONObject("seller").getString("email"),
+                json_item.getString("description"),
+                Category.valueOf(json_item.getString("category")))
+                );
+        }
+            
+        return (Item[]) items.toArray(new Item[items.size()]);
+    }
+
+    /**
+     * Fetches items from the marketplace that are within the given category.
+     * 
+     * @author Kevin Schumann
+     * @param category If specified only items with given category will be fetched
+     * @return Returns Item[] with specified category and are owned by username. 
+     *         Null if there are no such items.
+     * 
+     */
+    public static Item[] getItems(Category category) {
+        return getItemsWith(category, "");
+    } 
+    
+
+    /**
+     * Fetches items from the marketplace that are owned by username
+     * 
+     * @author Kevin Schumann
+     * @param username If specifid only items that belong to the username will be fetched
+     * @return Returns Item[] with specified category and are owned by username. 
+     *         Null if there are no such items.
+     * 
+     */
+    
+    public static Item[] getUserItems(String username) {
+        return getItemsWith(null, username);
+    }
+    
+
+    /**
+     * Removes an item to a user on the marketplace.
+     * 
+     * @author Kevin Schumann
+     * @param item Item that shall be removed.
+     
+     * @return True if removing the item was succesful. 
+     *         Returns false if any argument is null or empty.
+     */
+    public static boolean removeItem(Item item) {
+        JSONObject obj = new JSONObject();
+        obj.put("itemId", item.getItemId());
+        obj.put("userId", item.getUser());
+
+        HttpClient client = HttpClient.newHttpClient();
+        HttpRequest request = HttpRequest.newBuilder()
+                .version(Version.HTTP_1_1)
+                .uri(URI.create(BASE_URL + "/removeItem"))
+                .header("Content-Type", "application/json")
+                .POST(BodyPublishers.ofString(obj.toString()))
+                .build();
+
+        // send request
+        HttpResponse<String> res = null;
+        
+        try {
+            res = client.send(request, BodyHandlers.ofString());
+        } catch (Exception e) {
+            System.out.println(e);
+        }
+
+        return new JSONObject(res.body()).getBoolean("success");
+    }
+    
+    /**
+     * Updates an item  on the marketplace.
+     * 
+     * @author Kevin Schumann
+     * @param item Item that shall be updated on the server.
+
+     * @return True if updating the item  was succesful. 
+     *         If an item with the same id does not exist
+     *         on the server, this function will return false.
+     */
+    
+    public static boolean updateItem(Item item) {
+        if(item == null) {
+            return false;
+        }
+
+        JSONObject obj = new JSONObject();
+        obj.put("itemId", item.getItemId());
+        obj.put("name", item.getName());
+        obj.put("price", item.getPrice());
+        obj.put("description", item.getDescription());
+        obj.put("category", item.getCategory().name());
+        obj.put("userId", item.getUser());
+        
+        HttpClient client = HttpClient.newHttpClient();
+        HttpRequest request = HttpRequest.newBuilder()
+        .version(Version.HTTP_1_1)
+        .uri(URI.create(BASE_URL + "/updateItem"))
+        .header("Content-Type", "application/json")
+        .POST(BodyPublishers.ofString(obj.toString()))
+        .build();
+        
+        // send request
+        HttpResponse<String> res = null;
+        
+        try {
+            res = client.send(request, BodyHandlers.ofString());
+        } catch (Exception e) {
+            System.out.println(e);
+        }
+
+        System.out.println(res.body());
+        return new JSONObject(res.body()).getBoolean("success");
+    } 
+    
+}
+package task2.offerings;
+
+/**
+ * This class represents the categories 
+ * a item can be in the setting of a 
+ * digital marketplace. 
+ * 
+ * Each enum value represents a category
+ * with a unique string representation.
+ * 
+ * @author Kevin Schumann
+ * @version 03/05/2023
+ */
+public enum Category {
+    FURNITURE("Furniture"), 
+    ELECTRONICS("Electronics"), 
+    SERVICES("Services"), 
+    CLOTHES("Clothes"), 
+    ANIMALS("Animals");
+
+    // Stores the string representation.
+    private final String repr;
+
+    /**
+     * Constructs the object.
+     * 
+     * @author Kevin Schumann
+     * @param repr Representation of the object.
+     */
+    private Category(String repr) {
+        this.repr = repr;
+    }
+
+    /**
+     * Returns the string representation of the object.
+     * 
+     * @author Kevin Schumann
+     * @return String representation of the object.
+     */
+    public String str() {
+        return this.repr;
+    }
+
+    /**
+     * Checks if the given item is within the same
+     * category as the enum value.
+     * 
+     * @author Kevin Schumann
+     * @param item Item that shall be compared to the enum value
+     * @return True if the items is within the same category, otherwise false.
+     */
+    public boolean isSameCategory(Item item) {
+        return item.getCategory() == this;
+    }
+}
+package task2.offerings;
+
+
+import task2.auth.User;
+
+/**
+ * This class represents an item that
+ * can be offered on a digital marketplace.
+ * 
+ * Items are offered by an user. Stores 
+ * attributes such as name, price, description
+ * and the category
+ * 
+ * @author Kevin Schumann
+ * @version 03/05/2023
+ */
+public class Item {
+    private String name;
+    private float price;
+    private String owner; 
+    private String description;
+    private Category category;
+    private int itemId;
+
+    /**
+     * Constructs the object with all its attributes and itemid -1.
+     * 
+     * @author Kevin Schumann
+     * @param name Name of the item
+     * @param price Price of the item
+     * @param owner Owner of the item
+     * @param description Description of the item
+     * @param category Category of the item.
+     */
+    public Item(String name, float price, String owner, String description, Category category) {
+        this.name = name;
+        this.price = price;
+        this.owner = owner;
+        this.description = description;
+        this.category = category;
+        this.itemId = -1;
+    }
+
+    /**
+     * Constructs the object with all its attributes.
+     * 
+     * @author Kevin Schumann
+     * @param name Name of the item
+     * @param price Price of the item
+     * @param owner Owner of the item
+     * @param description Description of the item
+     * @param category Category of the item.
+     * @param itemId ItemID of the item.
+     */
+    public Item(String name, float price, String owner, String description, Category category, int itemId) {
+        this.name = name;
+        this.price = price;
+        this.owner = owner;
+        this.description = description;
+        this.category = category;
+        this.itemId = itemId;
+    }
+
+
+
+    /**
+     * Returns a string representation of the object.
+     * 
+     * @author Kevin Schumann
+     * @author Paul Bakenhus
+     * @return String representation of the object.
+     */
+    public String str() {
+        return String.format(
+            "Item: %s; Price: %.2f, User: %s, Description: %s, Category: %s",
+            name,
+            price,
+            owner,
+            description,
+            category.str()
+        );
+    }
+
+    /**
+     * Gets the name of the item.
+     * 
+     * @author Kevin Schumann
+     * @return Name of the item
+     */
+	public String getName() {
+		return this.name;
+	}
+
+    public int getItemId() {
+        return this.itemId;
+    }
+
+    /**
+     * Sets the name of the item
+     * 
+     * @author Kevin Schumann
+     * @param name New name of the item
+     */
+    public void setName(String name) {
+        this.name = name;
+	}
+
+    /**
+     * Gets the price of the item
+     * 
+     * @author Kevin Schumann 
+     * @return Price of the item.
+     */
+	public float getPrice() {
+		return this.price;
+	}
+
+    /**
+     * Sets the price of the item
+     * 
+     * @author Kevin Schumann
+     * @param price New price of the item
+     */
+	public void setPrice(float price) {
+		this.price = price;
+	}
+
+    /**
+     * Gets the owner of the item
+     * 
+     * @author Kevin Schumann 
+     * @return Owner of the item.
+     */
+	public String getUser() {
+		return this.owner;
+	}
+
+    /**
+     * Gets the category of the item
+     * 
+     * @author Kevin Schumann 
+     * @return Category of the item.
+     */
+    public Category getCategory() {
+        return this.category;
+    }
+
+    /**
+     * Sets the category of the item
+     * 
+     * @author Kevin Schumann
+     * @param category New category of the item
+     */
+    public void setCategory(Category category) {
+		this.category = category;
+    }
+
+    /**
+     * Gets the description of the item
+     * 
+     * @author Kevin Schumann 
+     * @return Description of the item.
+     */
+	public String getDescription() {
+		return this.description;
+	}
+
+    /**
+     * Sets the description of the item
+     * 
+     * @author Kevin Schumann
+     * @param description New description of the item
+     */
+	public void setDescription(String description) {
+		this.description = description;
+	}
+
+}

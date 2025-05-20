@@ -15,12 +15,13 @@ import task2.auth.User;
  * @version 03/05/2023
  */
 public class Item {
+    private int itemId;
     private String name;
     private float price;
     private String owner; 
     private String description;
     private Category category;
-    private int itemId;
+    
 
     /**
      * Constructs the object with all its attributes and itemid -1.
@@ -33,12 +34,12 @@ public class Item {
      * @param category Category of the item.
      */
     public Item(String name, float price, String owner, String description, Category category) {
+        this.itemId = -1;
         this.name = name;
         this.price = price;
         this.owner = owner;
         this.description = description;
         this.category = category;
-        this.itemId = -1;
     }
 
     /**
@@ -52,13 +53,13 @@ public class Item {
      * @param category Category of the item.
      * @param itemId ItemID of the item.
      */
-    public Item(String name, float price, String owner, String description, Category category, int itemId) {
+    public Item( int itemId, String name, float price, String owner, String description, Category category) {
+        this.itemId = itemId;
         this.name = name;
         this.price = price;
         this.owner = owner;
         this.description = description;
         this.category = category;
-        this.itemId = itemId;
     }
 
 
