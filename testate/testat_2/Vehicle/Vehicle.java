@@ -1,4 +1,4 @@
-public class Vehicle implements Comparable<Vehicle> { // TODO
+public class Vehicle implements Comparable<Vehicle> {
 
   private String name;
 
