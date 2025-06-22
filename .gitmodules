@@ -1,0 +1,3 @@
+[submodule "guess_what"]
+	path = guess_what
+	url = git@git2.hci.uni-hannover.de:prog2sose25/03.git
