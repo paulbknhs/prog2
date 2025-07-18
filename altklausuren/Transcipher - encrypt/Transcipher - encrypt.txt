@@ -1,0 +1,13 @@
+// Einen String aus der Konsole einlesen und diesen dann chiffrieren --> transposition cipher. 
+// Die Chiffrierung ist vom Grad n (auch einlesen). 
+// Die Chiffrierung funktioniert so:	n x m - Matrix 
+// String und Grad über Hilfsfunktion einlesen
+// z.B. 123456789 wird in eine Char-Matrix eingetragen und zwar eine Grad x Stringlaenge/n(aufgerundet) - Matrix. 
+// z.B. Java Testat (damit es in die Matrix passt müssen # ergänzt werden) z.B. 1234567890 Grad bei allen = 3 
+// Also 147 Jaea	1470 258	a st 258#	<- 3 Zeilen, da Grad = 3 
+// in Beispiel 369 vTt# 369# 
+// Und dann wird die Matrix wieder ausgelesen, aber dann in die andere Richtung,
+// also 147258369 oder Jaea stvTt#	Das soll dann nur ausgegeben werden
+
+
+

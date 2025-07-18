@@ -1,0 +1,25 @@
+erstelle Abstrakte klasse Fahrzeug
+mit methode boolean istSchwerer ähnlich wie compareTo
+eine Klasse Auto erbt von Fahrzeug
+Autos sollen sich vom gewicht her unterscheiden lassen implement Comparable
+Interface Quarttett dass auch istschwerer methode hat
+auto soll implement quartett
+
+Main einen Vektor erstellen (datenstruktur)
+10 zufällig schwere Fahrzeuge zwischen 500 1000kg schwere
+sortiert auf diesen Vektor positionieren
+generische Methode Fahrzeug hinzufügen erstellen
+die bekommt ein vektor und fahrzeug und dann nochmal 10 fahrzeuge hinzufügen sortiert in die liste eingefügt werden
+
+
+return soll der Vektor sein
+
+einmal ausgeben nach random und ausgeben nach einfügen.
+///////////////////////////////////////////////////////////////////
+
+1) Erstelle eine Klasse Fahrzeug, die als Variable das Gewicht enthält. Dazu soll eine Methode istSchwerer(Fahrzeug f) implementiert werden, die true oder false ausgibt.
+2) Schreibe eine Klasse Auto die von Fahrzeug erbt und überschreibe Ihre toString()-Methode sinnvoll.
+3) Erstelle ein Interface "Quartett", dass istSchwerer(Fahrzeug f) verlangt. Auto muss Quartett implementiert haben.
+4) Erstelle einen Vector, der zehn zufällig generierte Autos enthält mit einem Gewicht zwischen 500 und 2000 Kg.
+5) Sortiere den Vector aufsteigend nach Gewicht (Wie man das macht war diesmal egal).
+6) Schreibe eine generische Funktion fahrzeugEinfügen die den Vector und ein Auto übergeben bekommt und es an der passenden Stelle einfügt.

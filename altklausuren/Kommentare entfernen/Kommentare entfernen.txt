@@ -1,0 +1,25 @@
+Aufgabe:
+Wie in Java oder auch JavaScript gibt es (einzeilige/mehrzeilige) Kommentare, die vollständig in der Ausgabe entfernt werden sollen.
+Einzeilig: // (Rest der Zeile entfernen)
+Mehrzeilig: /* ()*/
+Es sollten sowohl die Kommentare als auch die Kommentarsyntax entfernt werden.
+
+Eingabe erfolgte via Konsole und zwar Zeile für Zeile (irgendwelche Zeichen, aber eben auch Kommentare). Mit dem Codewort "stop" sollte die Eingabe gestoppt und die Ausgabe (Eingabe ohne Kommentare) erfolgen.
+Vorgegeben war nur ein Methodenname und zwar für die Methode, die die Kommentare entfernt und einen String zurückgibt.
+
+Testeingabe :
+/*#####################*/1111111111
+22222 /* ####################
+#####################
+##################*/33333
+4444444444
+//########################
+55555//############
+stop
+
+Testausgabe (so wie ich denke wie sie richtig wäre):
+1111111111
+22222 
+33333
+4444444444
+55555

@@ -1,0 +1,23 @@
+1) Erstellen Sie einen geordneten Baum. Dafür werden zwei Klassen benötigt. 
+Die Klasse Baum soll die Information über den Wurzel Knoten besitzen, 
+und die Klasse Knoten soll einen linken sowie einen rechten Wurzelnachfolger haben, 
+und dazu noch eine Information speichern (in der Klausur waren es Strings)
+
+2) Schreiben sie nun eine Methode add(aktueller Knoten, String Info), die rekursiv einen neuen Knoten dem Baum hinzufügt, 
+und gleichzeitig den Knoten an die richtige Stelle des Baumes anhängt, 
+sodass dieser geordnet bleibt (mit geordnet ist hier gemeint das der linke Nachfolger eines Baumes lexikographisch kleiner und der rechte größer ist).
+Ist der Wurzel Knoten nicht vorhanden soll dieser erzeugt werden, 
+und die Info an diesen Knoten gehangen werden. 
+Sonst laufe den Baum durch, indem immer mit dem aktuellen Knoten verglichen wird (compareTo) und nach links oder rechts gegangen wird.
+
+3) Schreiben Sie ein Methode inOrder(Knoten), die den Baum rekursiv mit dem inOrder Verfahren durchläuft, 
+und dabei auf der Konsole ausgibt. Ist ein Knoten null, soll stattdessen "_" ausgegeben werden, ansonsten die Information die an dem Knoten hängt (der String). 
+
+Der Baum sollte nach folgendem Prinzip ausgegeben werden: 
+
+	inOrder(Knoten links) + Knoten.info + inOrder(Knoten rechts)
+
+4) Sorgen sie dafür, dass beim Ausführen des Programms ein String auf der Konsole eingegeben werden kann, und dieser dann als Knoten an der richtigen Stelle im Baum hinzugefügt wird. 
+Wurde der String entgegengenommen, soll der nächste String eingelesen werden.
+
+Bearbeitungszeit: 75 min

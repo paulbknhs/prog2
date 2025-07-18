@@ -1,0 +1,3 @@
+Es soll die Erstellung eines Barcodes vereinfacht nachprogrammiert werden.
+Dazu soll es die Möglichkeit geben Dezimalzahlen einzugeben.
+in eine Binärzahl konvertiert(Array) und als Barcode dargestellt.

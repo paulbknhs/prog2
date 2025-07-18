@@ -1,0 +1,11 @@
+// Testfall: "Ein Bürger ** gewann 1*90* Euro im Lotto *5!*".
+// Mit * eingeschlossen Textstellen wurden komprimiert.
+// Die Textstelle *90* besagt, dass die 0 (das letzte Zeichen) 9 mal im
+// ursprünglichen Text vorkam.
+// Die Zahl vor dem letzten Zeichen kann durchaus größer sein:
+// *1000* ist als 100-fache Wiederhohlung der Zahl 0 zu interpretieren.
+// Ebenso soll im Testfall *5!* fünf mal das Ausrufezeichen wiederholt werden.
+
+// Wichtig: ** kann ein * escapen. Daher brauchen zwei aufeinander folgende * nicht betrachtet werden!
+
+// Dekomprimiert: "Ein Bürger ** gewann 1000000000 Euro im Lotto !!!!!".

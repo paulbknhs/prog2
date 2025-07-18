@@ -1,0 +1,49 @@
+Prog II exam 8.9.2020
+Task String Manipulation
+
+(StringBuilder, Scanner)
+
+Write a simple program which reads a String of numbers devided by spaces from the console ("1 34 6 90 2020 54").
+This String will get further analysed by methods which get programed in a new class "NumberAnalyser".
+The NumberAnalyser class should have an attribute which takes in the String mentioned befor.
+In the NumberAnalyser class should be a method called analyseSequence which processes the String.
+The method should filter each number devided by a space and sort them by its checksum.
+Edit the toString method of NumberAnalyser fulfill the example return value below.
+The user should decide if he wants to analyse another sequence after every analysation process.
+(Full example below)
+
+("1 34 6 90 2020 54") toString:
+"
+Ausgabe:
+
+1: 1
+4: 2020
+6: 6
+7: 34
+9: 90 54
+"
+
+On the console:
+What does your sequence look like?
+>"1 34 6 90 2020 54"
+
+Ausgabe:
+
+1: 1
+4: 2020
+6: 6
+7: 34
+9: 90 54
+
+Do you want to analyse another sequence (y/n)?
+>y
+
+What does your sequence look like?
+.
+.
+.
+
+Do you want to analyse another sequence (y/n)?
+>n
+
+(The program should exit here)
